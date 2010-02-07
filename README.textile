@@ -9,3 +9,10 @@ A sample log file (@sample.log@) is included to demonstrate logcanary's function
 Feel free to use and modify logcanary in any way you see fit. It'll likely be a little messy as I clean up the original files.
 
 Enjoy!
+
+h4. Limitations
+
+* *Modifies log files*: logcanary uses a marker inserted into the log file to indicate to you where the last modifications began. A better method would be to store the line count of the file, then email any newly appended lines to you. This might make it into a future release.
+* *Requires write access to the log file's directory*: the MD5 sum of the specified file is written alongside it in @<filename>.md5@ - this obviously requires write access to that directory, which is a bit of a limitation. However it's better than storing the sum files in a common location as this method breaks down when two files of the same name are compared simultaneously.
+
+Neither of these points are showstoppers in my environment so I'm sure this script will be useful to someone besides me. If you feel moved to make any useful modifications to logcanary, in particular any that might address the above issues, then please feel free to submit a patch.
