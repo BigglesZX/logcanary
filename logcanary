@@ -16,6 +16,7 @@ SUMFILE="$2.md5"
 EMAIL="you@example.com"
 MARKSTRING="--- MARK ---"
 LINESTOEMAIL=30
+MAILER=`which mail`
 
 # check params
 if [ $# -lt 2 ]
@@ -76,7 +77,7 @@ then
 
 			# email notification
 			echo "Sending notification email..."
-			`cat $LOGFILE | tail -n $LINESTOEMAIL | mail -s "[logcanary] Log file updated" $EMAIL`
+			`cat $LOGFILE | tail -n $LINESTOEMAIL | $MAILER -s "[logcanary] Log file updated" $EMAIL`
 
 			# update sum
 			`md5sum $LOGFILE | awk '{print \$1}' > $SUMFILE`

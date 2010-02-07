@@ -2,9 +2,7 @@ h3. logcanary README
 
 logcanary is a very simple script for monitoring log files. It started life in one of my client websites, where all errors were written to a central logfile. I wanted to be able to poll that file and be notified by email when new lines were added.
 
-logcanary is designed to run from your @crontab@. When executed against a logfile, it MD5-sums that file and writes the result to a separate text file. When run again, it re-sums the log file, and if the contents have changed, it generates an email containing the last n lines of the log.
-
-logcanary is designed to run from your @crontab@. The logfile must first be "initialised" by running @logcanary init <file>@ - this marks the end of the file and generates the initial MD5 sum, which is stored in @<filename>.md5@. From then on, running @logcanary check <filename>@ compares the stored sum against the current sum of the file, and if the two don't match, the last n lines of the file are emailed to a specified address, after which the sum is re-calcuated and stored. When viewing the email, anything below the last "mark" in the file is new, pertinent info.
+logcanary is designed to run from your @crontab@. The logfile must first be "initialised" by running @logcanary init <file>@ - this marks the end of the file and generates the initial MD5 sum, which is stored in @<filename>.md5@. From then on, running @logcanary check <file>@ compares the stored sum against the current sum of the file, and if the two don't match, the last @n@ lines of the file are emailed to a specified address, after which the sum is re-calcuated and stored. When viewing the email, anything below the last "mark" in the file is new, pertinent info.
 	
 A sample log file (@sample.log@) is included to demonstrate logcanary's functionality. Run @logcanary init@ on this file to see the changes that are made.
 
