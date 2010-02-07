@@ -1,0 +1,98 @@
+#!/bin/bash
+
+# # # # # # # # # # # # # # # # # # # # # # #
+#                                           #
+#   logcanary v0.1b                         #
+#                                           #
+#   by BigglesZX                            #
+#   http://github.com/BigglesZX/logcanary   #
+#                                           #
+# # # # # # # # # # # # # # # # # # # # # # #
+
+# config
+MODE=$1
+LOGFILE=$2
+SUMFILE="$2.md5"
+EMAIL="you@example.com"
+MARKSTRING="--- MARK ---"
+LINESTOEMAIL=30
+
+# check params
+if [ $# -lt 2 ]
+then
+	echo "Usage: ./logcanary [init | check] filename"
+	echo
+	echo "init : mark logfile and generate initial MD5 sum"
+	echo "check : check logfile against last sum, notify on change"
+	exit
+fi
+
+# check mode
+if [ "$MODE" == "init" ]
+then
+	# mark logfile and generate initial md5 sum
+	echo "Initialising log file: $LOGFILE"
+	
+	# test logfile
+	if [ -w $LOGFILE ]
+	then
+		# mark log
+		# change date format to match your application's own log timestamping
+		# date -R won't work on OS X
+		echo "[`date -R`] $MARKSTRING" >> $LOGFILE
+
+		# update sum
+		`md5sum $LOGFILE | awk '{print \$1}' > $SUMFILE`
+		
+		echo "Log file initialised."
+	
+		exit 0
+	else
+		echo "Log file is not writable!"
+		exit 1
+	fi
+elif [ "$MODE" == "check" ]
+then
+	# check file
+	NEWSUM=`md5sum $LOGFILE | awk '{print \$1}'`
+	OLDSUM=`cat $SUMFILE`
+
+	if [ "$NEWSUM" == "$OLDSUM" ]
+	then
+		# file has not changed, exit
+		echo "Log file unchanged, exiting."
+		exit 0
+	else
+		# file has changed
+		echo "Log file changed."
+
+		# test logfile
+		if [ -w $LOGFILE ]
+		then
+			# mark log
+			# change date format to match your application's own log timestamping
+			# date -R won't work on OS X
+			echo "[`date -R`] $MARKSTRING" >> $LOGFILE
+
+			# email notification
+			echo "Sending notification email..."
+			`cat $LOGFILE | tail -n $LINESTOEMAIL | mail -s "[logcanary] Log file updated" $EMAIL`
+
+			# update sum
+			`md5sum $LOGFILE | awk '{print \$1}' > $SUMFILE`
+			
+			echo "Done."
+
+			exit 0
+		else
+			echo "Log file is not writable!"
+			exit 1
+		fi
+	fi
+else
+	# invalid mode
+	echo "Invalid mode $MODE"
+	exit 1
+fi
+
+# fin

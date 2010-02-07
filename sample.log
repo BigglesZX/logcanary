@@ -1,0 +1,10 @@
+#
+# This sample logfile contains data from a fictitious application.
+# Run "logcanary init" on this file to observe the mark that is added to the bottom of the file,
+# and the MD5 sum file that is generated to match it. You might then make some changes and run
+# "logcanary check" to send a sample notification email detailing the change.
+#
+[Thu, 01 Oct 2009 13:48:25 +0000] 66.249.68.113 User tried to open Request Info page for nonexistent item ID 71
+[Thu, 01 Oct 2009 13:48:27 +0000] 66.249.68.113 User tried to open Request Info page for nonexistent item ID 29
+[Thu, 01 Oct 2009 13:48:27 +0000] 66.249.68.113 User tried to open Request Info page for nonexistent item ID 9
+[Thu, 01 Oct 2009 13:48:29 +0000] 66.249.68.113 User tried to open Request Info page for nonexistent item ID 2
